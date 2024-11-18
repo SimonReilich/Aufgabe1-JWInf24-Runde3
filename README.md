@@ -4,17 +4,27 @@
 
 Um “möglichst quadratisch” zu sein, soll das Verhältnis der Seitenlängen der Rechtecke möglichst nahe an $1$ sein. Mathematisch formuliert: minimiere $max\{ {b/x \over d/y}; {d/y \over b/x } \}$, wobei $x$ die Anzahl an Unterteilungen in der Breite ($b$) und $y$ die Anzahl an Unterteilungen in der Tiefe ($d$) des Grundstücks von Herr Grün.
 
-Als ideale Lösung wird das Tupel $(x; y)$ angesehen, das $max\{ {b/x \over d/y}; {d/y \over b/x } \}$ minimiert und für das $\ Interessenten \leq x * y \leq \ Interessenten * 1,1$ gilt.
+Als ideale Lösung wird das Tupel $(x; y)$ angesehen, das $max\{ {b/x \over d/y}; {d/y \over b/x } \}$ minimiert und für das $\# Interessenten \leq x * y \leq \# Interessenten * 1,1$ gilt.
 
-Der naivest Ansatz ist dabei, einfach alle Paare $(x; y)$ durchzuprobieren
+Der naivest Ansatz ist dabei, einfach alle Paare $(x; y)$ durchzuprobieren, damit kann immer die optimale Lösung ermittelt werden
 
 # Umsetzung
 
 ## Algorithmus
 
-*Auf die Dokumentation des Einlesens der Daten wird verzichtet*
+*Die Lösungsidee wurde in Java umgesetzt, auf die Dokumentation des Einlesens der Daten wird verzichtet*
 
-## Analyse
+Der Code beginnt damit, den Benutzer nach der Anzahl der Interessenten, der Höhe und der Breite des Grundstücks zu fragen. Die eingegebenen Werte werden als Integer gespeichert.
+
+Eine Liste namens `l` wird erstellt, um alle möglichen Aufteilungen des Grundstücks zu speichern. Jede Aufteilung wird als ein Array mit zwei Elementen dargestellt: der Anzahl der Teilgrundstücke in Höhe und Breite. Die beiden verschachtelten `for`-Schleifen erzeugen alle möglichen Kombinationen von Teilgrundstücken, wobei sichergestellt wird, dass die Gesamtzahl der Teilgrundstücke mindestens der Anzahl der Interessenten und maximal der Anzahl an Interessenten zum Quadrat entspricht.
+
+Nun wird aus der Liste der möglichen Aufteilungen ein `Stream` erstellt. 
+
+Zuerst wird mit `.filter()` nach den Tupeln gefiltert, die der Bedingung der Aufgabenstellung entsprechen (die untere Grenze muss eigentlich nicht mehr überprüft werden, da sie durch den vorherigen Schritt bereits gewährleistet ist), die also mindestens die Anzahl der Interessenten und höchstens 110% der Interessenten ergeben.
+
+Anschließend wird die Aufteilung gefunden, die $max\{{b/x \over d/y}; {d/y \over b/x }\}$ minimiert. Dies geschieht unter Verwendung der `.min()` Funktion des Streams, sowie `Comparator.comparingInt()` und `Math.max()` 
+
+Zum Schluss wird der Stream wieder in eine Liste umgewandelt und das erste Element wird ausgegeben, da es potentiell auch mehrere optimale Lösungen geben kann (diese wären dann alle in der Liste enthalten, es macht keinen Unterschied, welches ausgegeben wird).
 
 # Beispiele
 
@@ -197,11 +207,14 @@ for (int i = 1; i <= interested_parties; i++) {
 
 int[] solution = l.stream()
 		.filter(p -> 
-				p[0] * p[1] >= interested_parties && p[0] * p[1] <= interested_parties * 1.1)
+				p[0] * p[1] >= interested_parties && 
+				p[0] * p[1] <= interested_parties * 1.1)
 		.min(Comparator.comparingInt(p -> 
 				Math.max((width / p[0]) / Math.ceilDiv(height, p[1]), 
-						(height / p[1]) / Math.ceilDiv(width, p[0])))).stream().toList().getFirst();
+						(height / p[1]) / Math.ceilDiv(width, p[0]))))
+						.stream().toList().getFirst();
 
 System.out.println("Ideale Aufteilung: " + solution[1] + 
-		" Grundstücke in der Höhe und " + solution[0] + " Grundstücke in der Breite");
+		" Grundstücke in der Höhe und " + solution[0] + 
+		" Grundstücke in der Breite");
 ```
