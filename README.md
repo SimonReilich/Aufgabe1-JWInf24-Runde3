@@ -4,7 +4,7 @@
 
 Um “möglichst quadratisch” zu sein, soll das Verhältnis der Seitenlängen der Rechtecke möglichst nahe an $1$ sein. Mathematisch formuliert: minimiere $max\{ {b/x \over d/y}; {d/y \over b/x } \}$, wobei $x$ die Anzahl an Unterteilungen in der Breite ($b$) und $y$ die Anzahl an Unterteilungen in der Tiefe ($d$) des Grundstücks von Herr Grün.
 
-Als ideale Lösung wird das Tupel $(x; y)$ angesehen, das $max\{ {b/x \over d/y}; {d/y \over b/x } \}$ minimiert und für das $\# Interessenten \leq x * y \leq Anzahl \space Interessenten * 1,1$ gilt.
+Als ideale Lösung wird das Tupel $(x; y)$ angesehen, das $max\{ {b/x \over d/y}; {d/y \over b/x } \}$ minimiert und für das $Anzahl \space Interessenten \leq x * y \leq Anzahl \space Interessenten * 1,1$ gilt.
 
 Der naivest Ansatz ist dabei, einfach alle Paare $(x; y)$ durchzuprobieren, damit kann immer die optimale Lösung ermittelt werden
 
